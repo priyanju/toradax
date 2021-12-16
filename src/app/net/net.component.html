@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+  <div class="content-wrapper" [ngClass]="{machine_running :data.machine_status =='3' ,machine_stop :data.machine_status=='100',machine_nodata: data.machine_status == null,machine_idle : data.machine_status != '3' && data.machine_status !='100' && data.machine_status != null}">
+    <div class="header" [ngClass]="{kannada :languagenew == 'ka',english :languagenew == 'en' && languagenew == 'hi', tamil :languagenew == 'ta'}">
+      <div class="top" style="width: 25%;" >
+       <div class="top_inner" style="text-align: left;">
+         <span [ngClass]="{lt_running :data.machine_status =='3' ,lt_stop :data.machine_status=='100',lt_nodata: data.machine_status == null,lt_idle : data.machine_status != '3' && data.machine_status !='100' && data.machine_status != null}" ></span>
+         <span *ngIf="data.machine_status =='3'" style="margin-top:10px;"> {{'running' | translate }}</span>
+         <span *ngIf="data.machine_status !='3' && data.machine_status !='100' && data.machine_status != null " style="margin-top:10px;"> {{'idle' | translate }}</span>
+         <span *ngIf="data.machine_status =='100'" style="margin-top:10px;"> {{'stop' | translate }}</span>
+         <span *ngIf="data.machine_status =='null'" style="margin-top:10px;"> {{'nodata' | translate }}</span>                        
+       </div>
+      </div>  
+      <div class="top_inner" style="width: 10%;">
+        <div>
+          {{'shift' | translate }}<br><span>{{data.shift_no}}</span>
+        </div>
+      </div>
+      <div class="top_inner"  style="width: 16%;">
+        <div>
+         {{'shifttime' | translate }}<br><span>{{data.start_time}}</span>
+       
+        </div>
+
+      </div>
+      <div class="top_inner" style="width:15%;">
+        <div>
+         {{'runtime' | translate }}<br>
+        <span>{{data.total_run_time }}</span>
+        </div>
+      </div>
+      <div class="top_inner" style="width:15%;">
+        <div>
+          {{'idletime' | translate }}<br>
+          <span>{{data.total_idle_time}}</span>
+        </div>
+      </div>
+      <div class="top_inner" style="width:15%;">
+        <div>
+          {{'stoptime' | translate }}<br>
+          <span>{{data.total_stop_time}}</span>
+        </div>
+      </div>
+      <div class="top_inner" style="width: 25%;">
+        <div>
+          {{data.date }}<br><span>{{data.time }}</span>
+        </div>
+      </div>  
+
+
+    </div>    
+  <div class="mid-section" [ngClass]="{kannada :languagenew == 'ka',english :languagenew == 'en',hindi :languagenew == 'hi', tamil :languagenew == 'ta'}">
+    <div class="row opp" >
+      <div style="width:55%;">
+      <label><span>{{data.machine_name}}<br>{{'operator' | translate }}: {{data.operator_name | translate}}</span></label>
+      </div>
+      <div class="util_mid" style="width:10%;font-size:18px;">{{'utilization' | translate }}<br><span style="font-size:35px">{{data.utilization}}%</span></div>
+<div class="oee_mid" style="width:10%;font-size:18px;">{{'efficiency' | translate }}<br><span style="font-size:35px">{{data.efficiency}}%</span></div>
+
+
+ </div>  
+    <div class="machine-status" style="margin-top: -24px;" [ngClass]="{kannada :languagenew == 'ka',english :languagenew == 'en',hindi :languagenew == 'hi', tamil :languagenew == 'ta'}">
+      <ol>
+        <li>{{'produced' | translate }}<span>{{data.parts_count}}</span></li>
+        <li>{{'target' | translate }}<span>{{data.target}}</span></li>
+        <li>{{'pending' | translate }}<span>{{data.pending}}</span></li>
+        <li>{{'accept' | translate }}<span>{{data.approved}}</span></li>
+        <li>{{'rework' | translate }}<span>{{data.rework}}</span></li>
+        <li>{{'rejected' | translate }}<span>{{data.rejected}}</span></li>
+        <li>{{'total' | translate }} <span>{{data.rejected+data.approved+data.rework}}</span></li>
+      </ol>
+    </div>        
+  </div>
+  <div class="footer" >   
+  <label [hidden]="data.machine_status =='3' || data.machine_status == '100'" onclick="document.getElementById('id05').style.display='block'" ><img width="30dpx" src="assets/images/lunch.png" onclick="document.getElementById('id05').style.display='block'">{{data.reason | translate }}</label>
+
+<div style="width: 25%;display: inline-block;position: relative;float: right;margin-right: 10px;">
+
+        <select class="button1 select-language center cus-sel" (click)='language(selectedlan)' [(ngModel)]="selectedlan" id="soflow-color">
+          <option [ngValue]="undefined" disabled>Language</option>
+          <option class="button1" value="en" onclick="document.getElementById('id07').style.display='none'">English</option>
+          <option class="button1" value="hi" onclick="document.getElementById('id07').style.display='none'">{{'hindi' | translate }}</option>
+          <option  class="button1" value="ka" onclick="document.getElementById('id07').style.display='none'">Kannada</option>
+          <option  class="button1" value="ta" onclick="document.getElementById('id07').style.display='none'">{{'tamil' | translate }}</option>
+        </select>
+        </div>        
+  </div>
+
+    <div id="id05" class="w3-modal" [ngClass]="{displayblock :test == true,displaynone : test == false}">
+    <div class="button-wrap-3 button-w-33 btn-reasons">
+      <div class="idle_reason">Last Update Reason:<span style="color: #fed93a;">&nbsp;{{reasonval}}</span></div>
+        <span style="font-size: 34px;" onclick="document.getElementById('id05').style.display='none'" 
+        class="w3-button w3-display-topright close-btn" (click)="valuetest()">&times;</span>    
+       <button  *ngFor="let food of reason_name" class="button1" onclick="document.getElementById('id05').style.display='none'" (click)="send(food.value)">{{food.value | translate }}</button>    
+    </div>
+  </div>
+
+
+
+
+   
+  </div>
+
+</body>
+
+</html>
